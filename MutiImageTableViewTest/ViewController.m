@@ -7,21 +7,35 @@
 //
 
 #import "ViewController.h"
+#import "YMTableViewCell.h"
 
-@interface ViewController ()
-
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSArray* dataArr;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    self.dataArr = @[@(1),@(2),@(3),@(4),@(5),@(6),@(7),@(8),@(9)];
+    [self.tableView registerNib:[UINib nibWithNibName:@"YMTableViewCell" bundle:nil] forCellReuseIdentifier:@"YMTableViewCell"];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger imageCount = [self.dataArr[indexPath.row] integerValue];
+        return [YMTableViewCell cellHeightWithImageCount:imageCount];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.dataArr.count;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger imageCount = [self.dataArr[indexPath.row] integerValue];
+    YMTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"YMTableViewCell" forIndexPath:indexPath];
+    [cell updateWithImageCount:imageCount];
+    return cell;
 }
 
 @end
